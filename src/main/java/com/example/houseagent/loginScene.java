@@ -5,38 +5,31 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.sql.*;
-import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class loginScene extends Application {
-
+    private registerScene reg;
     @Override
     public void start(Stage primaryStage) {
         //create an image background
-        //Image image = new Image("file:OIG.jpeg");
-        //ImageView imageView = new ImageView(image);
+        /*Image image = new Image("file:OIG.jpeg");
+        ImageView imageView = new ImageView(image);
         Image backgroundImage = new Image("D:\\java\\respo\\houseAgent\\src\\externalSrc\\OIG.jpeg");
 
-        // 创建背景图对象
+        //创建背景图对象
         BackgroundImage background = new BackgroundImage(backgroundImage,
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
 
         // 创建根布局并设置背景
         StackPane root = new StackPane();
-        root.setBackground(new javafx.scene.layout.Background(background));
-        root.toBack();
+        //root.setBackground(new javafx.scene.layout.Background(background));
+        //root.toBack();*/
         // 创建场景并设置根布局
-        Scene sceneBg = new Scene(root, 400, 300);
+        //Scene sceneBg = new Scene(root, 400, 300);
 
         primaryStage.setTitle("Real Estate Management System");
         primaryStage.centerOnScreen();
@@ -74,9 +67,8 @@ public class loginScene extends Application {
         GridB.setVgap(100);
         GridB.add(registerButton,5,0);
         GridB.add(loginButton,0,0);
-
+        reg = new registerScene();
         registerButton.setOnAction(e->{
-            registerScene reg = new registerScene();
             reg.start(primaryStage);
         });
         // 添加事件处理
@@ -90,9 +82,10 @@ public class loginScene extends Application {
             if (loginSuccessful) {
                 // 登录成功，打开主界面或执行其他操作
                 loginButton.setOnAction(e->{
-                    mainScene open = new mainScene();
-                    open.start(primaryStage);
-                });
+                    functionScene functionScene = new functionScene();
+                    functionScene.start(primaryStage);
+                        }
+                );
                 System.out.println("Login successful!");
             } else {
                 // 登录失败，显示错误提示
@@ -108,7 +101,11 @@ public class loginScene extends Application {
         //rid.getChildren().add(imageView);
         // 创建Scene并显示窗口
         //grid.setOpacity(1);
+
+
         Scene scene = new Scene(grid,300, 200);
+        //scene.getStylesheets().add("background.css");
+        //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("background.css")).toExternalForm());
         //primaryStage.setOpacity(99);
         //primaryStage.setScene(new Scene(pane,500, 400));
         primaryStage.setScene(scene);

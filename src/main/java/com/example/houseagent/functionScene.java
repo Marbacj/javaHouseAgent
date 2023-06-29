@@ -15,10 +15,10 @@ public class functionScene extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Button button1 = new Button("Button 1");
-        Button button2 = new Button("Button 2");
-        Button button3 = new Button("Button 3");
-        Button button4 = new Button("Button 4");
+        Button button1 = new Button("addInfo");
+        Button button2 = new Button("showInfo");
+        Button button3 = new Button("delInfo");
+        Button button4 = new Button("updateInfo");
 
         HBox hbox = new HBox(10);
         hbox.setAlignment(Pos.CENTER);
@@ -27,8 +27,13 @@ public class functionScene extends Application {
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().add(hbox);
+        //addInfo
+        button1.setOnAction(e->{
+            ui ui = new ui();
+            ui.start(primaryStage);
+        });
 
-        Scene scene = new Scene(vbox, 400, 300);
+        Scene scene = new Scene(vbox, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

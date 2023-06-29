@@ -13,8 +13,10 @@ public class addInfo {
             String createTableSql = "CREATE TABLE properties (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(50), area DOUBLE, building_number INT, room_number INT, house_area DOUBLE, unit_price DOUBLE, total_price DOUBLE)";
 
             // 执行创建表操作
+            //Statement createStatement = conn.createStatement();
+            //createStatement.executeUpdate(createTableSql);
             Statement createStatement = conn.createStatement();
-            createStatement.executeUpdate(createTableSql);
+            createStatement.executeUpdate("ALTER TABLE properties ADD COLUMN new_column1 INT");
 
             String sql = "INSERT INTO properties (name, area, building_number, room_number, house_area, unit_price, total_price) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);

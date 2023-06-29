@@ -84,16 +84,18 @@ public class registerScene extends Application {
         final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         final String DB_URL = "jdbc:mysql://localhost:3306/houseAgent?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         // 假设你的数据库连接信息已经正确配置
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/user",
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/user?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
                 "root", "Mabohv123")) {
 
             //建表操作
             // 创建表的SQL语句
             String createTableSql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), password VARCHAR(50))";
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("ALTER TABLE users ADD COLUMN new_column2 INT");
 
             // 执行创建表操作
-            Statement statement = conn.createStatement();
-            statement.executeUpdate(createTableSql);
+            //Statement statement = conn.createStatement();
+            //statement.executeUpdate(createTableSql);
 
             // 创建PreparedStatement对象
             PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");

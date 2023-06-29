@@ -1,6 +1,7 @@
 package com.example.houseagent;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -14,15 +15,16 @@ public class ui extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    private addInfo addInfo;
     @Override
     public void start(Stage primaryStage) {
+
         // 创建表单布局
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-
+        gridPane.setAlignment(Pos.CENTER);
         // 创建表单控件
         TextField nameField = new TextField();
         TextField areaField = new TextField();
@@ -57,8 +59,11 @@ public class ui extends Application {
         // 设置舞台的标题和场景
         primaryStage.setTitle("Add Property");
         primaryStage.setScene(scene);
+        primaryStage.setWidth(900);
+        primaryStage.setHeight(600);
         primaryStage.show();
 
+        addInfo = new addInfo();
         // 注册按钮的事件处理
         addButton.setOnAction(event -> {
             String name = nameField.getText();
@@ -70,7 +75,7 @@ public class ui extends Application {
             double totalPrice = Double.parseDouble(totalPriceField.getText());
 
             // 调用addProperty方法进行处理
-            addInfo addInfo = new addInfo();
+
             boolean success = addInfo.addProperty(name, area, buildingNumber, roomNumber, houseArea, unitPrice, totalPrice);
 
             if (success) {
