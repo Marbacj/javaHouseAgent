@@ -61,4 +61,5 @@ public class showInfo extends Application {
         primaryStage.setTitle("Table Data");
         primaryStage.show();
     }
+
 }

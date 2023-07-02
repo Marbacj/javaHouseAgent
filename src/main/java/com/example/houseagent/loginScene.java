@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import java.sql.*;
 
@@ -14,22 +16,6 @@ public class loginScene extends Application {
     private registerScene reg;
     @Override
     public void start(Stage primaryStage) {
-        //create an image background
-        /*Image image = new Image("file:OIG.jpeg");
-        ImageView imageView = new ImageView(image);
-        Image backgroundImage = new Image("D:\\java\\respo\\houseAgent\\src\\externalSrc\\OIG.jpeg");
-
-        //创建背景图对象
-        BackgroundImage background = new BackgroundImage(backgroundImage,
-                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true));
-
-        // 创建根布局并设置背景
-        StackPane root = new StackPane();
-        //root.setBackground(new javafx.scene.layout.Background(background));
-        //root.toBack();*/
-        // 创建场景并设置根布局
-        //Scene sceneBg = new Scene(root, 400, 300);
 
         primaryStage.setTitle("Real Estate Management System");
         primaryStage.centerOnScreen();
@@ -41,9 +27,10 @@ public class loginScene extends Application {
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(40);
         grid.setHgap(40);
-        grid.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.BASELINE_RIGHT);
         grid.setMinHeight(500);
         grid.setMinWidth(800);
+        grid.setGridLinesVisible(true);
         // 添加用户名和密码文本框
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
@@ -60,13 +47,23 @@ public class loginScene extends Application {
         Button registerButton = new Button("register");
         //grid.add(loginButton, 3,4);
         //grid.add(registerButton,2,2);
-
         GridPane GridB = new GridPane();
         grid.add(GridB,1,2);
-        GridB.setPadding(new Insets(10, 10, 10, 10));
-        GridB.setVgap(100);
+        GridB.setPadding(new Insets(5, 5, 5, 5));
+        GridB.setHgap(12);
         GridB.add(registerButton,5,0);
         GridB.add(loginButton,0,0);
+
+        Label background = new Label();
+        background.setPadding(new Insets(0,0,0,50));
+        // 创建图像对象
+        Image image = new Image("loginWindow.jpg"); // 替换为您的图像路径
+
+        // 创建图像视图对象
+        ImageView imageView = new ImageView(image);
+
+        // 将图像视图设置为标签的图形内容
+        background.setGraphic(imageView);
         reg = new registerScene();
         registerButton.setOnAction(e->{
             reg.start(primaryStage);
@@ -96,19 +93,13 @@ public class loginScene extends Application {
                 alert.showAndWait();
             }
         });
-        //Pane pane = new Pane();
-        //pane.getChildren().addAll(grid,root);
-        //rid.getChildren().add(imageView);
-        // 创建Scene并显示窗口
-        //grid.setOpacity(1);
+
 
 
         Scene scene = new Scene(grid,300, 200);
-        //scene.getStylesheets().add("background.css");
-        //scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("background.css")).toExternalForm());
-        //primaryStage.setOpacity(99);
-        //primaryStage.setScene(new Scene(pane,500, 400));
+        //scene.setRoot(background);
         primaryStage.setScene(scene);
+        //primaryStage.setScene(scene1);
         primaryStage.show();
     }
     static final String DB_URL = "jdbc:mysql://localhost:3306/user?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";

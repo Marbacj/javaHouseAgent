@@ -21,7 +21,7 @@ public class registerScene extends Application {
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(5);
         grid.setHgap(5);
-        grid.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.BASELINE_RIGHT);
         // 添加用户名和密码文本框
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
@@ -75,6 +75,7 @@ public class registerScene extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
 
     private boolean registerUser(String username, String password) {
         // 连接数据库并将注册信息添加到数据库
