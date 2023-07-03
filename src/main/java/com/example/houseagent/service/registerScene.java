@@ -1,49 +1,63 @@
-package com.example.houseagent;
+package com.example.houseagent.service;
 
+import com.example.houseagent.service.login_window;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.sql.*;
 
 public class registerScene extends Application {
-
+    public com.example.houseagent.service.login_window login_window;
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Registration");
+        primaryStage.setResizable(false);
+        primaryStage.setWidth(900);
+        primaryStage.setHeight(600);
+        GridPane gridB = new GridPane();
 
         // 创建GridPane布局
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
-        grid.setAlignment(Pos.BASELINE_RIGHT);
+        grid.setPadding(new Insets(0, 100, 10, 10));
+
+
         // 添加用户名和密码文本框
         Label usernameLabel = new Label("Username:");
         TextField usernameTextField = new TextField();
         grid.add(usernameLabel, 0, 0);
-        grid.add(usernameTextField, 1, 0);
-
+        grid.add(usernameTextField, 0, 1);
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
-        grid.add(passwordLabel, 0, 1);
-        grid.add(passwordField, 1, 1);
-
+        grid.add(passwordLabel, 0, 2);
+        grid.add(passwordField, 0, 3);
+        GridPane grid2 = new GridPane();
         Button registerButton = new Button("Register");
-        grid.add(registerButton, 1, 2);
+        grid2.add(registerButton,0,0);
 
         //button cancel
         Button cButton = new Button("cancel");
-        grid.add(cButton,1,3);
+        grid2.add(cButton,1,0);
+        grid.add(grid2,0,6);
+        login_window = new login_window();
         cButton.setOnAction(e->{
-            loginScene loginScene = new loginScene();
-            loginScene.start(primaryStage);
+
+            login_window.start(primaryStage);
         });
+        //set picture
+        Label background = new Label();
+        Image bg = new Image("register.jpg");
+        ImageView bg1 = new ImageView(bg);
+        background.setGraphic(bg1);
+        gridB.add(bg1,0,0);
+        gridB.add(grid,0,0);
         // 添加事件处理
+
         registerButton.setOnAction(event -> {
             String username = usernameTextField.getText();
             String password = passwordField.getText();
@@ -71,7 +85,7 @@ public class registerScene extends Application {
         });
 
         // 创建Scene并显示窗口
-        Scene scene = new Scene(grid, 300, 200);
+        Scene scene = new Scene(gridB);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -90,9 +104,9 @@ public class registerScene extends Application {
 
             //建表操作
             // 创建表的SQL语句
-            String createTableSql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), password VARCHAR(50))";
+            /*String createTableSql = "CREATE TABLE users (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), password VARCHAR(50))";
             Statement statement = conn.createStatement();
-            statement.executeUpdate("ALTER TABLE users ADD COLUMN new_column2 INT");
+            statement.executeUpdate("ALTER TABLE users ADD COLUMN new_column2 INT");*/
 
             // 执行创建表操作
             //Statement statement = conn.createStatement();

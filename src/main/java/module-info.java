@@ -6,4 +6,6 @@ module com.example.houseagent {
 
     opens com.example.houseagent to javafx.fxml;
     exports com.example.houseagent;
+    exports com.example.houseagent.service;
+    opens com.example.houseagent.service to javafx.fxml;
 }
