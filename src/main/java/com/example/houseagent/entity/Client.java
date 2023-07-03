@@ -60,5 +60,9 @@ public class Client {
     public StringProperty statusProperty() {
         return status;
     }
+
+    public int getId() {
+        return id.get();
+    }
 }
 

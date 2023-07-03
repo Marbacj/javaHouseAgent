@@ -16,9 +16,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 // Extend the Application class
 public class onwerProperty extends Application {
-
+    public mainForm mainForm;
     // Declare some global variables
     private Button closeButton, ownerPropertiesButton;
     private TableView<Property> table;
@@ -28,7 +33,10 @@ public class onwerProperty extends Application {
     public void start(Stage primaryStage) {
         // Create a button for closing the window
         closeButton = new Button("Close");
-
+        mainForm = new mainForm();
+        closeButton.setOnAction(e->{
+            mainForm.start(primaryStage);
+        });
         // Create a button for viewing the owner properties
         ownerPropertiesButton = new Button("Owner Properties");
 
@@ -81,7 +89,8 @@ public class onwerProperty extends Application {
         BorderPane root = new BorderPane();
         root.setCenter(table);
         root.setBottom(buttonBox);
-
+        //load date from datebase
+        loadDataFromDatabase();
         //Create a scene with the border pane as the root node
         Scene scene = new Scene(root, 800, 600);
 
@@ -93,6 +102,42 @@ public class onwerProperty extends Application {
         primaryStage.show();
     }
     public static void main(String []args){launch(args);}
+    static final String USER = "root";
+    static final String PASS = "Mabohv123";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    private void loadDataFromDatabase() {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            // 执行查询获取属性数据
+            ResultSet resultSet = conn.createStatement().executeQuery("SELECT * FROM property");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String type = resultSet.getString("type");
+// 获取其他属性值...
+                double squareFt = resultSet.getDouble("squareFt");
+                String owner = resultSet.getString("owner");
+                double price = resultSet.getDouble("price");
+                String address = resultSet.getString("address");
+                int bedrooms = resultSet.getInt("bedrooms");
+                int bathrooms = resultSet.getInt("bathrooms");
+                int age = resultSet.getInt("age");
+                boolean balcony = resultSet.getBoolean("balcony");
+                boolean pool = resultSet.getBoolean("pool");
+                boolean backyard = resultSet.getBoolean("backyard");
+                boolean garage = resultSet.getBoolean("garage");
+                String description = resultSet.getString("description");
+
+// 创建 Property 对象并添加到表格中
+                Property property = new Property(id, type, squareFt, owner, price, address, bedrooms, bathrooms, age,
+                        balcony, pool, backyard, garage, description);
+                table.getItems().add(property);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
 
 

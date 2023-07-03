@@ -87,7 +87,8 @@ public class registerScene extends Application {
         // 创建Scene并显示窗口
         Scene scene = new Scene(gridB);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        //primaryStage.show();
+        primaryStage.showAndWait();
     }
 
 

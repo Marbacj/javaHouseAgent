@@ -2,6 +2,7 @@ package com.example.houseagent.service;
 
 import com.example.houseagent.dao.ClientDao;
 import com.example.houseagent.entity.Client;
+import com.example.houseagent.entity.Owner;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 // Extend the Application class
 public class clients extends Application {
 
@@ -22,7 +25,9 @@ public class clients extends Application {
     private TextField idField, firstNameField, lastNameField, phoneField, emailField, addressField, searchField;
     private Button addButton, editButton, removeButton, refreshButton, searchButton;
     private TableView<Client> table;
-
+    static final String USER = "root";
+    static final String PASS = "Mabohv123";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -68,7 +73,18 @@ public class clients extends Application {
         editButton = new Button("Edit");
         removeButton = new Button("Remove");
         refreshButton = new Button("Refresh");
-
+        addButton.setOnAction(e->{
+            addClient();
+        });
+        refreshButton.setOnAction(e->{
+            refreshTable();
+        });
+        removeButton.setOnAction(e->{
+            removeClient();
+        });
+        editButton.setOnAction(e->{
+            editClient();
+        });
         // Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setPadding(new Insets(10));
@@ -142,4 +158,122 @@ public class clients extends Application {
 
     }
     public static void main(String []args){launch(args);}
+    private void addClient() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String phone = phoneField.getText();
+        String email = emailField.getText();
+        String address = addressField.getText();
+
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
+            String sql = "INSERT INTO client (firstName, lastName, phone, email, address) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, firstName);
+            statement.setString(2, lastName);
+            statement.setString(3, phone);
+            statement.setString(4, email);
+            statement.setString(5, address);
+            statement.executeUpdate();
+
+            statement.close();
+            connection.close();
+
+            clearFields();
+            //refreshTable();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle any errors that occur during the database insertion
+        }
+    }
+
+    private void clearFields() {
+        firstNameField.clear();
+        lastNameField.clear();
+        phoneField.clear();
+        emailField.clear();
+        addressField.clear();
+    }
+    private void refreshTable() {
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
+            String sql = "SELECT * FROM client";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+            table.getItems().clear();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String phone = resultSet.getString("phone");
+                String email = resultSet.getString("email");
+                String address = resultSet.getString("address");
+
+                Client client = new Client(id, firstName, lastName, phone, email, address);
+                table.getItems().add(client);
+            }
+
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle any errors that occur during the database retrieval
+        }
+    }
+
+    private void removeClient() {
+        Client selectedClient = table.getSelectionModel().getSelectedItem();
+        if (selectedClient != null) {
+            try {
+                Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
+                String sql = "DELETE FROM client WHERE id = ?";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setInt(1, selectedClient.getId());
+                statement.executeUpdate();
+
+                statement.close();
+                connection.close();
+
+                refreshTable();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any errors that occur during the database deletion
+            }
+        }
+    }
+    private void editClient() {
+        Client selectedClient = table.getSelectionModel().getSelectedItem();
+        if (selectedClient != null) {
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            String phone = phoneField.getText();
+            String email = emailField.getText();
+            String address = addressField.getText();
+
+            try {
+                Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
+                String sql = "UPDATE client SET firstName = ?, lastName = ?, phone = ?, email = ?, address = ? WHERE id = ?";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1, firstName);
+                statement.setString(2, lastName);
+                statement.setString(3, phone);
+                statement.setString(4, email);
+                statement.setString(5, address);
+                statement.setInt(6, selectedClient.getId());
+                statement.executeUpdate();
+
+                statement.close();
+                connection.close();
+
+                clearFields();
+                refreshTable();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle any errors that occur during the database update
+            }
+        }
+    }
+
 }

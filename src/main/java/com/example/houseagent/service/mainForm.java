@@ -57,7 +57,7 @@ public class mainForm extends Application {
             clients.start(primaryStage);
         });
         propertyType = new propertyType();
-        propertyButton.setOnAction(e->{
+        propertyTypeButton.setOnAction(e->{
             propertyType.start(primaryStage);
         });
         salesManagement = new salesManagement();
