@@ -11,7 +11,7 @@ public class Property {
     private final IntegerProperty id;
     private final StringProperty type;
     private final DoubleProperty squareFt;
-    private final StringProperty owner;
+    private final IntegerProperty owner;
     private final DoubleProperty price;
     private final StringProperty address;
     private final IntegerProperty bedrooms;
@@ -23,13 +23,13 @@ public class Property {
     private final BooleanProperty garage;
     private final StringProperty description;
 
-    public Property(int id, String type, double squareFt, String owner, double price, String address,
+    public Property(int id, String type, double squareFt, int owner, double price, String address,
                     int bedrooms, int bathrooms, int age, boolean balcony, boolean pool,
                     boolean backyard, boolean garage, String description) {
         this.id = new SimpleIntegerProperty(id);
         this.type = new SimpleStringProperty(type);
         this.squareFt = new SimpleDoubleProperty(squareFt);
-        this.owner = new SimpleStringProperty(owner);
+        this.owner = new SimpleIntegerProperty(owner);
         this.price = new SimpleDoubleProperty(price);
         this.address = new SimpleStringProperty(address);
         this.bedrooms = new SimpleIntegerProperty(bedrooms);
@@ -56,7 +56,7 @@ public class Property {
         return squareFt;
     }
 
-    public StringProperty ownerProperty() {
+    public IntegerProperty ownerProperty() {
         return owner;
     }
 

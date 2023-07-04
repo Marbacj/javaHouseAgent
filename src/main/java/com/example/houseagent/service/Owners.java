@@ -24,9 +24,10 @@ public class Owners extends Application {
 
     // Declare some global variables
     private TextField idField, firstNameField, lastNameField, phoneField, emailField, addressField;
-    private Button addButton, editPropertiesButton, removeButton, refreshButton;
+    private Button addButton, editPropertiesButton, removeButton, refreshButton,closeButton;
     private TableView<Owner> table;
     public OwnerDao ownerDao;
+    public mainForm mainForm;
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -78,7 +79,7 @@ public class Owners extends Application {
         editPropertiesButton = new Button("Edit Properties");
         removeButton = new Button("Remove");
         refreshButton = new Button("Refresh");
-
+        closeButton = new Button ("close");
         addButton.setOnAction(e->{
             add(firstName, lastName, phone, email, address);
         });
@@ -98,11 +99,14 @@ public class Owners extends Application {
                 //loadDataFromDatabase();
             }
         });
-
+        mainForm = new mainForm();
+        closeButton.setOnAction(e->{
+            mainForm.start(primaryStage);
+        });
         // Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addButton, editPropertiesButton, removeButton, refreshButton);
+        buttonBox.getChildren().addAll(addButton, editPropertiesButton, removeButton, refreshButton,closeButton);
 
         // Create a grid pane for the fields and labels
         GridPane gridPane = new GridPane();

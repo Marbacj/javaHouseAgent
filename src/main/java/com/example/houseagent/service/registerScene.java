@@ -93,10 +93,7 @@ public class registerScene extends Application {
 
 
     private boolean registerUser(String username, String password) {
-        // 连接数据库并将注册信息添加到数据库
-        // 返回true表示注册成功，返回false表示注册失败
 
-        // 这里只是一个简单的示例，你需要根据你的数据库和表结构进行适当的实现
         final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
         final String DB_URL = "jdbc:mysql://localhost:3306/houseAgent?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         // 假设你的数据库连接信息已经正确配置

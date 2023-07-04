@@ -23,7 +23,11 @@ public class Client {
         this.email = new SimpleStringProperty(email);
         this.address = new SimpleStringProperty(address);
     }
-
+    public Client(int id, String name, String status) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.status = new SimpleStringProperty(status);
+    }
     // Getters and Setters for the properties
 
     public IntegerProperty idProperty() {

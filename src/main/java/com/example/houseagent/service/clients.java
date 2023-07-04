@@ -28,6 +28,7 @@ public class clients extends Application {
     static final String USER = "root";
     static final String PASS = "Mabohv123";
     static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    public propertySearch propertySearch;
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -85,6 +86,7 @@ public class clients extends Application {
         editButton.setOnAction(e->{
             editClient();
         });
+
         // Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setPadding(new Insets(10));
@@ -114,7 +116,10 @@ public class clients extends Application {
 
         //Create a button for the search function
         searchButton = new Button("Search");
-
+        propertySearch = new propertySearch();
+        searchButton.setOnAction(e->{
+            propertySearch.start(primaryStage);
+        });
         //Create a horizontal box for the search bar and button
         HBox searchBar = new HBox(10);
         searchBar.setPadding(new Insets(10));
@@ -222,7 +227,6 @@ public class clients extends Application {
             // Handle any errors that occur during the database retrieval
         }
     }
-
     private void removeClient() {
         Client selectedClient = table.getSelectionModel().getSelectedItem();
         if (selectedClient != null) {

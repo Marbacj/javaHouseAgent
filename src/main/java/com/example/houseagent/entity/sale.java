@@ -35,5 +35,21 @@ public class sale {
     public StringProperty dateProperty() {
         return date;
     }
+
+    public int getPropertyId() {
+        return propertyId.get();
+    }
+
+    public int getClientId() {
+        return clientId.get();
+    }
+
+    public double getFinalPrice() {
+        return  finalPrice.get();
+    }
+
+    public String getDate() {
+        return date.get();
+    }
 }
 

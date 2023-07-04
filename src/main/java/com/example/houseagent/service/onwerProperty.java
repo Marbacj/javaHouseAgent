@@ -56,8 +56,8 @@ public class onwerProperty extends Application {
         typeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
         TableColumn<Property, Double> squareFtColumn = new TableColumn<>("Square ft");
         squareFtColumn.setCellValueFactory(cellData -> cellData.getValue().squareFtProperty().asObject());
-        TableColumn<Property, String> ownerColumn = new TableColumn<>("Owner");
-        ownerColumn.setCellValueFactory(cellData -> cellData.getValue().ownerProperty());
+        TableColumn<Property, Integer> ownerColumn = new TableColumn<>("Owner");
+        ownerColumn.setCellValueFactory(cellData -> cellData.getValue().ownerProperty().asObject());
         TableColumn<Property, Double> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
 
@@ -115,7 +115,7 @@ public class onwerProperty extends Application {
                 String type = resultSet.getString("type");
 // 获取其他属性值...
                 double squareFt = resultSet.getDouble("squareFt");
-                String owner = resultSet.getString("owner");
+                int owner = resultSet.getInt("owner");
                 double price = resultSet.getDouble("price");
                 String address = resultSet.getString("address");
                 int bedrooms = resultSet.getInt("bedrooms");

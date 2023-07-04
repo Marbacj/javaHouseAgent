@@ -14,6 +14,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
+import java.sql.SQLException;
+
 // Extend the Application class
 public class mainForm extends Application {
     public onwerProperty onwerProperty;
@@ -62,7 +64,11 @@ public class mainForm extends Application {
         });
         salesManagement = new salesManagement();
         saleButton.setOnAction(e->{
-            salesManagement.start(primaryStage);
+            try {
+                salesManagement.start(primaryStage);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         // Create a vertical box for the options
         VBox options = new VBox(10);

@@ -1,6 +1,7 @@
 package com.example.houseagent.service;
 
 // Import the necessary JavaFX classes
+import com.example.houseagent.entity.Property;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,15 +17,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 // Extend the Application class
 public class propertySearch extends Application {
-
+    public showProperty showProperty;
     // Declare some global variables
-    private TextField idField, squareFtField, ownerIdField, priceField, addressField, descriptionField, bedroomsField, ageField;
+    private TextField idField, squareFtField, ownerIdField, priceField, addressField, descriptionField, bedroomsField,bathroomsField,ageField;
     private Button addButton, editButton, removeButton, showButton, searchButton;
     private ComboBox<String> typeBox;
     private CheckBox balconyBox, poolBox, garageBox;
-
+    static final String USER = "root";
+    static final String PASS = "Mabohv123";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -36,7 +41,13 @@ public class propertySearch extends Application {
 
         // Create a button for the search function
         searchButton = new Button("Search");
-
+        searchButton.setOnAction(e->{
+            try {
+                searchEvent();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         // Create a label for the type field
         Label typeLabel = new Label("Type:");
 
@@ -80,6 +91,28 @@ public class propertySearch extends Application {
         editButton = new Button("Edit");
         removeButton = new Button("Remove");
         showButton = new Button("Show");
+        showProperty = new showProperty();
+        showButton.setOnAction(e->{
+            try {
+                showProperty.start(primaryStage);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        addButton.setOnAction(e->{
+            try {
+                addEvent();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        editButton.setOnAction(e->{
+            try {
+                editEvent();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         //Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
@@ -91,6 +124,7 @@ public class propertySearch extends Application {
 
         //Create fields and checkboxes for property features such as bedrooms, age of the house, balcony, pool, and garage
         bedroomsField = new TextField();
+        bathroomsField = new TextField();
         ageField = new TextField();
         balconyBox = new CheckBox("Balcony");
         poolBox = new CheckBox("Pool");
@@ -141,5 +175,98 @@ public class propertySearch extends Application {
         primaryStage.show();
     }
     public static void main(String []args){launch(args);}
+    public void searchEvent() throws SQLException {
+        // Create a connection to the database
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+        // Create a statement to execute SQL queries
+        Statement stmt = conn.createStatement();
+
+        // Get the value from the id field
+        String id = idField.getText();
+
+        // Create a SQL query to select the record from the property table based on the id
+        String sql = "SELECT * FROM property WHERE id = " + id;
+
+        // Execute the query and get the result set
+        ResultSet rs = stmt.executeQuery(sql);
+
+        // Loop through the result set and display the data in the text fields and checkboxes
+        while (rs.next()) {
+            typeBox.setValue(rs.getString("type"));
+            squareFtField.setText(rs.getString("squareFt"));
+            ownerIdField.setText(rs.getString("owner"));
+            priceField.setText(rs.getString("price"));
+            addressField.setText(rs.getString("address"));
+            descriptionField.setText(rs.getString("description"));
+            bedroomsField.setText(rs.getString("bedrooms"));
+            //bathroomsField.setText(rs.getString("bathrooms"));
+            ageField.setText(rs.getString("age"));
+            balconyBox.setSelected(rs.getBoolean("balcony"));
+            poolBox.setSelected(rs.getBoolean("pool"));
+            garageBox.setSelected(rs.getBoolean("garage"));
+            break; // Only display one record at a time
+        }
+        // Close the result set, statement and connection
+        rs.close();
+        stmt.close();
+        conn.close();
+    }
+    public void addEvent() throws SQLException {
+        // Create a connection to the database
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+        // Create a statement to execute SQL queries
+        Statement stmt = conn.createStatement();
+
+        // Get the values from the text fields and combo box
+        String type = typeBox.getValue();
+        double squareFt = Double.parseDouble(squareFtField.getText());
+        int owner = Integer.parseInt(ownerIdField.getText());
+        double price = Double.parseDouble(priceField.getText());
+        String address = addressField.getText();
+        int bedrooms = Integer.parseInt(bedroomsField.getText());
+        int bathrooms = Integer.parseInt(bathroomsField.getText());
+        boolean balcony = balconyBox.isSelected();
+        boolean pool = poolBox.isSelected();
+        boolean garage = garageBox.isSelected();
+        String description = descriptionField.getText();
+
+        // Create a SQL query to insert the values into the property table
+        String sql = "INSERT INTO property (type, squareFt, owner, price, address, bedrooms, bathrooms, balcony, pool, garage, description) VALUES ('" + type + "', " + squareFt + ", " + owner + ", " + price + ", '" + address + "', " + bedrooms + ", " + bathrooms + ", " + balcony + ", " + pool + ", " + garage + ", '" + description + "')";
+
+        // Execute the query and close the statement and connection
+        stmt.executeUpdate(sql);
+        stmt.close();
+        conn.close();
+    }
+    void editEvent() throws SQLException {
+        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+        // Create a statement to execute SQL queries
+        Statement stmt = conn.createStatement();
+
+        // Get the values from the text fields and combo box
+        int id = Integer.parseInt(idField.getText());
+        String type = typeBox.getValue();
+        double squareFt = Double.parseDouble(squareFtField.getText());
+        int owner = Integer.parseInt(ownerIdField.getText());
+        double price = Double.parseDouble(priceField.getText());
+        String address = addressField.getText();
+        int bedrooms = Integer.parseInt(bedroomsField.getText());
+        int bathrooms = Integer.parseInt(bathroomsField.getText());
+        boolean balcony = balconyBox.isSelected();
+        boolean pool = poolBox.isSelected();
+        boolean garage = garageBox.isSelected();
+        String description = descriptionField.getText();
+
+        // Create a SQL query to update the record in the property table based on the id
+        String sql = "UPDATE property SET type = '" + type + "', squareFt = " + squareFt + ", owner = " + owner + ", price = " + price + ", address = '" + address + "', bedrooms = " + bedrooms + ", bathrooms = " + bathrooms + ", balcony = " + balcony + ", pool = " + pool + ", garage = " + garage + ", description = '" + description + "' WHERE id = " + id;
+
+        // Execute the query and close the statement and connection
+        stmt.executeUpdate(sql);
+        stmt.close();
+        conn.close();
+    }
 }
 

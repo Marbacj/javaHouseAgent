@@ -14,6 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.sql.*;
+
 // Extend the Application class
 public class showProperty extends Application {
 
@@ -21,13 +23,19 @@ public class showProperty extends Application {
     private Button closeButton, showPropertiesButton;
     private TableView<Property> table;
     private TextField addressField, descriptionField;
-
+    static final String USER = "root";
+    static final String PASS = "Mabohv123";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    public propertySearch propertySearch;
     // Override the start method
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
         // Create a button for closing the window
         closeButton = new Button("Close");
-
+        propertySearch = new propertySearch();
+        closeButton.setOnAction(e->{
+            propertySearch.start(primaryStage);
+        });
         // Create a button for showing properties
         showPropertiesButton = new Button("Show Properties");
 
@@ -47,10 +55,9 @@ public class showProperty extends Application {
         squareFtColumn.setCellValueFactory(cellData -> cellData.getValue().squareFtProperty().asObject());
 
 
-
         //Create more table columns for the remaining property attributes
-        TableColumn<Property, String> ownerColumn = new TableColumn<>("Owner");
-        ownerColumn.setCellValueFactory(cellData -> cellData.getValue().ownerProperty());
+        TableColumn<Property, Integer> ownerColumn = new TableColumn<>("Owner");
+        ownerColumn.setCellValueFactory(cellData -> cellData.getValue().ownerProperty().asObject());
         TableColumn<Property, Double> priceColumn = new TableColumn<>("Price");
         priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty().asObject());
         TableColumn<Property, String> addressColumn = new TableColumn<>("Address");
@@ -75,7 +82,7 @@ public class showProperty extends Application {
         Label addressLabel = new Label("Address:");
 
         //Create a text field for the address field
-                addressField = new TextField();
+        addressField = new TextField();
 
         //Create a label for the description/comment field
         Label descriptionLabel = new Label("Description/Comment:");
@@ -87,14 +94,14 @@ public class showProperty extends Application {
         BorderPane root = new BorderPane();
         root.setTop(table);
         root.setBottom(buttonBox);
-        root.setLeft(addressLabel);
-        root.setCenter(addressField);
-        root.setRight(descriptionLabel);
-        root.setBottom(descriptionField);
-
+        //root.setLeft(addressLabel);
+        //root.setCenter(addressField);
+        //root.setRight(descriptionLabel);
+        //root.setBottom(descriptionField);
+        showEvent();
         //Create a scene with the border pane as the root node
         Scene scene = new Scene(root, 800, 600);
-
+        // For the show properties button, you need to query the property table and display all the records in the table view
         //Set the title and scene of the primary stage
         primaryStage.setTitle("Show Properties");
         primaryStage.setScene(scene);
@@ -103,5 +110,35 @@ public class showProperty extends Application {
         primaryStage.show();
     }
     public static void main(String[]args){launch(args);}
+    public void showEvent() throws SQLException {
+        // For the show properties button, you need to query the property table and display all the records in the table view
+            // Create a connection to the database
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            // Create a statement to execute SQL queries
+            Statement stmt = conn.createStatement();
+
+            // Create a SQL query to select all records from the property table
+            String sql = "SELECT * FROM property";
+
+            // Execute the query and get the result set
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Create an observable list to store the data from the result set
+            ObservableList<Property> data = FXCollections.observableArrayList();
+
+            // Loop through the result set and add each record as a Property object to the observable list
+            while (rs.next()) {
+                data.add(new Property(rs.getInt("id"), rs.getString("type"), rs.getDouble("squareFt"), rs.getInt("owner"), rs.getDouble("price"), rs.getString("address"), rs.getInt("bedrooms"), rs.getInt("bathrooms"), rs.getInt("age"), rs.getBoolean("balcony"), rs.getBoolean("pool"), rs.getBoolean("backyard"), rs.getBoolean("garage"), rs.getString("description")));
+            }
+
+            // Close the result set, statement and connection
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            // Set the items of the table view to the observable list
+            table.setItems(data);
+    }
 }
 
