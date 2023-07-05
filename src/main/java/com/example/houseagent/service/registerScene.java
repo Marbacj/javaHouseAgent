@@ -72,8 +72,8 @@ public class registerScene extends Application {
                 alert.setHeaderText(null);
                 alert.setContentText("Registration successful!");
                 alert.showAndWait();
-
-                primaryStage.close();
+                //login_window.start(primaryStage);
+                //primaryStage.close();
             } else {
                 // 注册失败，显示错误提示
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -87,8 +87,8 @@ public class registerScene extends Application {
         // 创建Scene并显示窗口
         Scene scene = new Scene(gridB);
         primaryStage.setScene(scene);
-        //primaryStage.show();
-        primaryStage.showAndWait();
+        primaryStage.show();
+        //primaryStage.showAndWait();
     }
 
 

@@ -39,7 +39,7 @@ public class propertyType extends Application {
         //idField.setEditable(false);
 
         // Create a label for the name field
-        Label nameLabel = new Label("Name:");
+        Label nameLabel = new Label("Type:");
 
         // Create a text field for the name field
         nameField = new TextField();

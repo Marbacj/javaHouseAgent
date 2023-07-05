@@ -23,12 +23,13 @@ public class clients extends Application {
 
     // Declare some global variables
     private TextField idField, firstNameField, lastNameField, phoneField, emailField, addressField, searchField;
-    private Button addButton, editButton, removeButton, refreshButton, searchButton;
+    private Button addButton, editButton, removeButton, refreshButton, searchButton,closeButton;
     private TableView<Client> table;
     static final String USER = "root";
     static final String PASS = "Mabohv123";
     static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     public propertySearch propertySearch;
+    public mainForm mainForm;
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -74,6 +75,7 @@ public class clients extends Application {
         editButton = new Button("Edit");
         removeButton = new Button("Remove");
         refreshButton = new Button("Refresh");
+        closeButton = new Button("close");
         addButton.setOnAction(e->{
             addClient();
         });
@@ -86,11 +88,14 @@ public class clients extends Application {
         editButton.setOnAction(e->{
             editClient();
         });
-
+        mainForm = new mainForm();
+        closeButton.setOnAction(e->{
+            mainForm.start(primaryStage);
+        });
         // Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addButton, editButton, removeButton, refreshButton);
+        buttonBox.getChildren().addAll(addButton, editButton, removeButton, refreshButton,closeButton);
 
         // Create a grid pane for the fields and labels
         GridPane gridPane = new GridPane();

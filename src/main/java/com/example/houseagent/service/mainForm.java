@@ -3,6 +3,7 @@ package com.example.houseagent.service;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,7 +19,7 @@ import java.sql.SQLException;
 
 // Extend the Application class
 public class mainForm extends Application {
-    public onwerProperty onwerProperty;
+    public ownerProperty ownerProperty;
     public Owners owners;
     public clients clients;
     public propertyType propertyType;
@@ -29,9 +30,14 @@ public class mainForm extends Application {
         // Create an image view for the app logo
         Image logo = new Image("logo.png");
         ImageView logoView = new ImageView(logo);
+        //create background for the bg
+        Image background = new Image("mainFormBackground.jpg");
+        ImageView bg = new ImageView(background);
+        bg.setFitHeight(400);
+        bg.setFitWidth(500);
 
         // Create a label for the app name
-        Label appName = new Label("MyApp");
+        Label appName = new Label("RealEstateManager");
         appName.setStyle("-fx-font-size: 24; -fx-font-weight: bold;");
 
         // Create a horizontal box for the header
@@ -46,9 +52,9 @@ public class mainForm extends Application {
         Button ownerButton = new Button("Owner");
         Button clientButton = new Button("Client");
         Button saleButton = new Button("Sale");
-        onwerProperty = new onwerProperty();
+        ownerProperty = new ownerProperty();
         propertyButton.setOnAction(e->{
-            onwerProperty.start(primaryStage);
+            ownerProperty.start(primaryStage);
         });
         owners = new Owners();
         ownerButton.setOnAction(e->{
@@ -74,11 +80,13 @@ public class mainForm extends Application {
         VBox options = new VBox(10);
         options.setPadding(new Insets(10));
         options.getChildren().addAll(propertyButton, propertyTypeButton,ownerButton, clientButton, saleButton);
-
+        GridPane Gridbg = new GridPane();
+        Gridbg.add(bg,1,0);
+        Gridbg.add(options,0,0);
         // Create a border pane for the window layout
         BorderPane root = new BorderPane();
         root.setTop(header);
-        root.setLeft(options);
+        root.setLeft(Gridbg);
 
         // Create a scene with the border pane as the root node
         Scene scene = new Scene(root, 600, 400);

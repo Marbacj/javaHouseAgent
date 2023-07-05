@@ -27,7 +27,7 @@ public class salesManagement extends Application {
     private TableView<Client> clientsTable;
     private TableView<Property> propertiesTable;
     public clients clients;
-    public onwerProperty ownerProperty;
+    public com.example.houseagent.service.ownerProperty ownerProperty;
     static final String USER = "root";
     static final String PASS = "Mabohv123";
     static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
@@ -100,7 +100,7 @@ public class salesManagement extends Application {
         addNewClientButton.setOnAction(e->{
             clients.start(primaryStage);
         });
-        ownerProperty = new onwerProperty();
+        ownerProperty = new ownerProperty();
         addNewPropertyButton.setOnAction(e->{
             ownerProperty.start(primaryStage);
         });

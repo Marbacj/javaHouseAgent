@@ -2,11 +2,8 @@ package com.example.houseagent.service;
 
 
 // Import the necessary JavaFX classes
-import com.example.houseagent.entity.Owner;
 import com.example.houseagent.entity.Property;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 // Extend the Application class
-public class onwerProperty extends Application {
+public class ownerProperty extends Application {
     public mainForm mainForm;
     // Declare some global variables
     private Button closeButton, ownerPropertiesButton;

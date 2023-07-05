@@ -12,6 +12,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -24,12 +26,13 @@ public class propertySearch extends Application {
     public showProperty showProperty;
     // Declare some global variables
     private TextField idField, squareFtField, ownerIdField, priceField, addressField, descriptionField, bedroomsField,bathroomsField,ageField;
-    private Button addButton, editButton, removeButton, showButton, searchButton;
+    private Button addButton, editButton, removeButton, showButton, searchButton,closeButton;
     private ComboBox<String> typeBox;
     private CheckBox balconyBox, poolBox, garageBox;
     static final String USER = "root";
     static final String PASS = "Mabohv123";
     static final String DB_URL = "jdbc:mysql://localhost:3306/realestatemanage?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    public clients clients;
     // Override the start method
     @Override
     public void start(Stage primaryStage) {
@@ -91,7 +94,9 @@ public class propertySearch extends Application {
         editButton = new Button("Edit");
         removeButton = new Button("Remove");
         showButton = new Button("Show");
+        closeButton = new Button("close");
         showProperty = new showProperty();
+
         showButton.setOnAction(e->{
             try {
                 showProperty.start(primaryStage);
@@ -113,11 +118,14 @@ public class propertySearch extends Application {
                 throw new RuntimeException(ex);
             }
         });
-
+        clients = new clients();
+        closeButton.setOnAction(e->{
+            clients.start(primaryStage);
+        });
         //Create a horizontal box for the buttons
         HBox buttonBox = new HBox(10);
         buttonBox.setPadding(new Insets(10));
-        buttonBox.getChildren().addAll(addButton, editButton, removeButton, showButton);
+        buttonBox.getChildren().addAll(addButton, editButton, removeButton, showButton, closeButton);
 
         //Create a label for the property features section
         Label featuresLabel = new Label("Property Features:");
@@ -158,7 +166,6 @@ public class propertySearch extends Application {
         gridPane.add(balconyBox, 1, 8);
         gridPane.add(poolBox, 2, 8);
         gridPane.add(garageBox, 3, 8);
-
         //Create a border pane for the window layout
         BorderPane root = new BorderPane();
         root.setCenter(gridPane);
